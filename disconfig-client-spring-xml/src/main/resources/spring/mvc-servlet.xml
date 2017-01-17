@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+    <mvc:default-servlet-handler />
+    <mvc:annotation-driven  >
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+              <bean
+                    class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+
+        </mvc:message-converters>
+
+    </mvc:annotation-driven>
+
+
+    <!--<aop:aspectj-autoproxy  proxy-target-class="true"/>-->
+
+    <!-- 只扫描@Controller注释的类 -->
+    <context:component-scan base-package="com.absurd"
+                            use-default-filters="false">
+        <context:include-filter expression="org.springframework.stereotype.Controller"
+                                                                                type="annotation"/>
+        <context:exclude-filter expression="org.springframework.stereotype.Service"
+                                type="annotation" />
+    </context:component-scan>
+
+</beans>
